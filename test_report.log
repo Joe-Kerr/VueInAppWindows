@@ -116,6 +116,6 @@
     √ install throws if being called before plugin installer set up config data
 
 
-  93 passing (428ms)
+  93 passing (326ms)
 
  MOCHA  Tests completed successfully
