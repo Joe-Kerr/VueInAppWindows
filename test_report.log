@@ -1,0 +1,121 @@
+ MOCHA  Testing...
+
+
+
+  Default public namespaces
+    √ ui/inappWindow.js: 'inAppWindows'
+    √ ui/inappWindowContainer.js: 'inAppWindows'
+    √ index.js/installer: 'inAppWindows' and '$state'
+
+  index.js (installer)
+    √ installer provides expected public exports
+    √ installer provides expected private exports
+    √ installer writes object and store namespace to window component
+    √ installer writes object namespace to window container
+    √ installer calls window container installer
+
+  Integration testing
+    √ window container present
+    √ multiple windows can be opened and closed (54ms)
+    √ window can be minimised
+    √ window can be maximised
+    √ window can have custom x,y coords
+    √ windows are put into foreground if they become active
+    √ windows have correct headers
+    √ minimized window with header has its body auto hidden
+    √ window can have custom id
+    √ window can have custom title
+    √ window can have custom context
+    √ window can have additional classes
+
+  store/windows.js/actions
+    √ actions.open sets window as active by string
+    √ actions.open sets window as active by id/context
+    √ actions.open moves window into foreground
+    √ actions.close closes and cleans up window
+    √ actions.moveIntoForeground applies highestZ to window
+    √ actions.moveIntoForeground increments next z-index
+    √ actions.set was assigned the correct function
+    √ actions.setState was assigned the correct function
+    √ actions.init returns if already inited or no data provided
+    √ actions.destroy closes all windows and resets state
+
+  store/windows.js/getters
+    √ getters.windows returns windows container
+
+  store/windows.js/mutations
+    √ mutations.set was assigned the right function
+    √ mutations.setState was assigned the right function
+    √ mutations.addWindows pushes new windows and updates index
+    √ mutations.addWindows only works if init false
+    √ mutations.addWindows throws if missing window id or name
+    √ mutations.addWindows throws if duplicate window id
+
+  ui/inappWindow.js
+    √ props.window.validator returns false if missing an expected property
+    √ props.window.validator returns false if non-null value is not of expected type
+    √ props.window.validator ignores unknown props on window
+    √ computed.[*simple styles*] properties convert their values into CSS format
+    √ computed.maxedStyles switches on if window is maximized
+    √ computed.extraClasses returns array of strings from className
+    √ computed.extraClasses returns empty string if className is empty
+    √ computed.extraClasses treats spaces-only as empty
+    √ created throws if window prop not provided
+    √ created writes namespace to data if on $options
+    √ created dispatches, namespaced, non-undefined header to store
+    √ mounted dispatches width and height to store
+    √ destroyed un-maximises window if maximised
+
+  ui/inappWindow.js/methods
+    √ methods.close dispatches, namespaced, window id to store
+    √ methods.toggleMin dispatches, namespaced, inverse of minimized state to store
+    √ methods.toggleMin de-enlarges the window if it is maximized
+    √ methods.toggleMax dispatches, namespaced, inverse of maximized state and rect to store
+    √ methods.toggleMax calls enlarge or deEnlarge depending on max'ed state
+    √ methods.toggleMax un-minimizes the window if it is minimized
+    √ methods.getViewportRect tries document.documentElement.clientWidth|Height first
+    √ methods.getViewportRect tries document.body.clientWidth|Height second
+    √ methods.getViewportRect tries window.innerWidth|Height third
+    √ methods.getPageRect chooses the max of available document widths/heights
+    √ methods.getContainment translates el's position into a containment viewport or page rect
+    √ methods.getContainment handles element with empty position
+    √ methods.enlarge caches current window rect and returns new rect
+    √ methods.deEnlarge clears cache and returns previous window rect
+    √ methods.move dispatches, namespaced, new x,y to store
+    √ methods.preventOutOfBounds prevents window edges from going out of viewport
+    √ methods.moveIntoForeground dispatches, namespaced, window id to store
+
+  ui/inappWindowContainer.js
+    √ computed.listOfWindows returns filtered list of opened windows
+    √ methods.installNamespace writes namespace
+    √ methods.installNamespace throws if namespace is undefined on $options
+    √ methods.installDefaultHeader dispatches defined default header
+    √ methods.installWindowsToStore dispatches, namespaced, user windows with at least names and ids
+    √ methods.installWindowsToStore uses window name as id if id not provided
+    √ methods.installWindowsToStore cleans up initial user data
+    √ methods.postInstall runs install routines once
+    √ methods.postInstall cleans up install routines
+    √ created calls postInstall
+
+  ui/inappWindowContainer.js/preinstall methods
+    √ installHeaders writes all header components to window component
+    √ installHeaders returns false early if no headers provided
+    √ installHeaders throws if user header does not have name property
+    √ installHeaders throws if duplicate names
+    √ installWindows extends base window component with user windows
+    √ installWindows moves user provided data to internal namespace
+    √ installWindows sets object if no user data provided
+    √ installWindows preserves existing components on base windows
+    √ installWindows throws if user window does not have name property
+    √ installWindows throws if duplicate names in user windows
+    √ installWindows throws if user windows not an array
+    √ install extracts user windows
+    √ install saves component and store namespace names as well as init state
+    √ install calls sub installers
+    √ install cleans up install functions
+    √ install throws if being called before plugin installer set up config data
+
+
+  93 passing (428ms)
+
+ MOCHA  Tests completed successfully

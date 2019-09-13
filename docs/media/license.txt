@@ -1,0 +1,9 @@
+Icons (C) Public domain
+
+The color palette belongs to the public domain and the icon theme is also public in nature since the 0.8.90 release. Although the users are not obligated to, they can act as good Samaritans by crediting the developers for the usage of icon themes or any derivative artwork in projects! Doing so can help in spreading more awareness about the Tango desktop project.
+
+http://tango-project.org/Frequently_Asked_Questions/
+
+
+
+Background image (C) sceef https://sceef.itch.io/2d-gui-asset-legacyretro
