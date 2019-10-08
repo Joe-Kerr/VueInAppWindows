@@ -1168,12 +1168,13 @@ components[inAppWindow.name] = inAppWindow;
     installWindowsToStore: function installWindowsToStore(userWindows, storeNamespace, compNamespace) {
       var install = [];
 
-      for (var win in userWindows) {
-        var userData = userWindows[win][compNamespace];
-        userData.name = userWindows[win].name;
+      for (var i = 0, ii = userWindows.length; i < ii; i++) {
+        var win = userWindows[i];
+        var userData = win[compNamespace];
+        userData.name = win.name;
         userData.id = userData.id || userData.name;
         install.push(userData);
-        delete userWindows[win][compNamespace];
+        delete win[compNamespace];
       }
 
       this.$store.dispatch(storeNamespace + "/init", {

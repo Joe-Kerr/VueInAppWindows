@@ -300,6 +300,9 @@ The available classes are:
 
 # Versions
 
+### 1.0.1
+- Fixed: Replaced for-in loop with for loop.
+
 ### 1.0.0
 - Public release.
 

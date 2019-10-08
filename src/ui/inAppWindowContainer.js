@@ -107,15 +107,15 @@ export default {
 		
 		installWindowsToStore(userWindows, storeNamespace, compNamespace) {
 			const install = [];
-
-			for(const win in userWindows) {
-				const userData = userWindows[win][compNamespace];
+			for(let i=0, ii=userWindows.length; i<ii; i++) {
+				const win = userWindows[i];
+				const userData = win[compNamespace];
 				
-				userData.name = userWindows[win].name;
+				userData.name = win.name;
 				userData.id = userData.id || userData.name;				
 				
 				install.push(userData);				
-				delete userWindows[win][compNamespace];
+				delete win[compNamespace];
 			}		
 			
 			this.$store.dispatch(storeNamespace+"/init", {windows: install});		
