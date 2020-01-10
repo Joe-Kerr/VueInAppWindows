@@ -48,6 +48,59 @@ test("mutations.addWindows pushes new windows and updates index", ()=>{
 	assert.deepEqual(sample.state.index, {"unitTestWindow":0, "newWin1":1, "newWin2":2});
 });
 
+test("mutations.addWindows writes expected default values to window", ()=>{
+	const state = {
+		init: false,
+		windows: [],
+		index: {},
+		defaultHeader: "abc",
+		startingZ: 123
+	};
+	const defaults = {
+		title: "",
+		header: state.defaultHeader,
+		className: "",
+		zIndex: state.startingZ
+	};
+	const installWindow = [{
+		id: "winId",
+		name: "winName"
+	}];
+	
+	sample.mutations.addWindows(state, {windows: installWindow});
+	
+	const window = state.windows[0];
+	for(const prop in defaults) {
+		assert.strictEqual(window[prop], defaults[prop], "Unexpected default value for: "+prop);
+	}
+});
+
+test("mutations.addWindows writes system and user values to window", ()=>{
+	const state = {
+		init: false,
+		windows: [],
+		index: {},
+	};	
+	const systemProps = {		
+		name: "winName"
+	};
+	const userProps = {
+		id: "winId",
+		title: "winTitle",
+		header: "winHeader",
+		className: "winClass"
+	};
+	const props = Object.assign({}, systemProps, userProps);
+	const installWindow = [props];
+	
+	sample.mutations.addWindows(state, {windows: installWindow});
+
+	const window = state.windows[0];
+	for(const prop in props) {
+		assert.strictEqual(window[prop], props[prop], "Unexpected value for: "+prop);
+	}	
+});
+
 test("mutations.addWindows only works if init false", ()=>{
 	assert.equal(sample.state.init, false);
 	assert.equal(sample.state.windows.length, 1);

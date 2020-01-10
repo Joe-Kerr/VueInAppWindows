@@ -1,3 +1,5 @@
+Unit test report 
+
  MOCHA  Testing...
 
 
@@ -16,7 +18,7 @@
 
   Integration testing
     √ window container present
-    √ multiple windows can be opened and closed (54ms)
+    √ multiple windows can be opened and closed 
     √ window can be minimised
     √ window can be maximised
     √ window can have custom x,y coords
@@ -47,6 +49,8 @@
     √ mutations.set was assigned the right function
     √ mutations.setState was assigned the right function
     √ mutations.addWindows pushes new windows and updates index
+    √ mutations.addWindows writes expected default values to window
+    √ mutations.addWindows writes system and user values to window
     √ mutations.addWindows only works if init false
     √ mutations.addWindows throws if missing window id or name
     √ mutations.addWindows throws if duplicate window id
@@ -116,6 +120,6 @@
     √ install throws if being called before plugin installer set up config data
 
 
-  93 passing (320ms)
+  95 passing 
 
  MOCHA  Tests completed successfully
