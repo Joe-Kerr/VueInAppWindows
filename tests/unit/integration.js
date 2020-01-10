@@ -101,6 +101,7 @@ test("window can be minimised", ()=>{
 		
 	const afterBool = store.state.windows.windows[1].minimized;
 	const afterVisible = winBody.isVisible();
+	const minnedStyle = win.attributes("style");
 	
 	minBtn.trigger("click");
 	
@@ -114,6 +115,8 @@ test("window can be minimised", ()=>{
 	assert.equal(beforeVisible, true);
 	assert.equal(afterVisible, false);
 	assert.equal(restoreVisible, true);
+	
+	assert.ok(minnedStyle.indexOf("height: auto") > -1);
 });
 
 test("window can be maximised", ()=>{

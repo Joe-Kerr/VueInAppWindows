@@ -60,6 +60,7 @@ Unit test report
     √ props.window.validator returns false if non-null value is not of expected type
     √ props.window.validator ignores unknown props on window
     √ computed.[*simple styles*] properties convert their values into CSS format
+    √ computed.minnedStyles switches on if window is minimized
     √ computed.maxedStyles switches on if window is maximized
     √ computed.extraClasses returns array of strings from className
     √ computed.extraClasses returns empty string if className is empty
@@ -120,6 +121,6 @@ Unit test report
     √ install throws if being called before plugin installer set up config data
 
 
-  95 passing 
+  96 passing 
 
  MOCHA  Tests completed successfully

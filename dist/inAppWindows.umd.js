@@ -566,7 +566,9 @@ function IWindow() {
   };
 }
 // CONCATENATED MODULE: ./projects/plugins/inAppWindows/src/store/windows.js
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { _defineProperty(target, key, source[key]); }); } return target; }
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
@@ -697,22 +699,24 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     }
   })
 });
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"fe79d39a-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./projects/plugins/inAppWindows/src/ui/inAppWindowContainer.vue?vue&type=template&id=3f1fd746&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"76cc857b-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./projects/plugins/inAppWindows/src/ui/inAppWindowContainer.vue?vue&type=template&id=3f1fd746&
 var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{attrs:{"id":"plugin-wrapper-windows"}},_vm._l((_vm.listOfWindows),function(window){return _c('inapp-window',{key:window.id,attrs:{"window":window}})}),1)}
 var staticRenderFns = []
 
 
 // CONCATENATED MODULE: ./projects/plugins/inAppWindows/src/ui/inAppWindowContainer.vue?vue&type=template&id=3f1fd746&
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"fe79d39a-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./projects/plugins/inAppWindows/src/ui/inAppWindow.vue?vue&type=template&id=9e85df9e&
-var inAppWindowvue_type_template_id_9e85df9e_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('transition',{attrs:{"name":"inapp-window_transition"}},[_c('div',{ref:'window'+_vm.window.id,class:['inapp-window' ].concat( _vm.extraClasses),style:([{zIndex: _vm.zIndex, top: _vm.top, left: _vm.left}, _vm.maxedStyles]),attrs:{"id":'inapp-window_'+_vm.window.id},on:{"!mousedown":function($event){return _vm.moveIntoForeground($event)}}},[(_vm.window.header !== '')?_c('div',{staticClass:"inapp-window_header"},[_c(_vm.window.header,{tag:"component",attrs:{"window":_vm.window,"funcs":{close: _vm.close, toggleMin: _vm.toggleMin, toggleMax: _vm.toggleMax, move: _vm.move}}})],1):_vm._e(),_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.window.header === '' || _vm.window.minimized === false),expression:"window.header === '' || window.minimized === false"}],staticClass:"inapp-window_body",staticStyle:{"width":"100%","height":"100%"}},[_c(_vm.window.name,{tag:"component",attrs:{"window":_vm.window,"funcs":{close: _vm.close, toggleMin: _vm.toggleMin, toggleMax: _vm.toggleMax, move: _vm.move}}})],1)])])}
-var inAppWindowvue_type_template_id_9e85df9e_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"76cc857b-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./projects/plugins/inAppWindows/src/ui/inAppWindow.vue?vue&type=template&id=c3fdaabc&
+var inAppWindowvue_type_template_id_c3fdaabc_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('transition',{attrs:{"name":"inapp-window_transition"}},[_c('div',{ref:'window'+_vm.window.id,class:['inapp-window' ].concat( _vm.extraClasses),style:([{zIndex: _vm.zIndex, top: _vm.top, left: _vm.left}, _vm.minnedStyles, _vm.maxedStyles]),attrs:{"id":'inapp-window_'+_vm.window.id},on:{"!mousedown":function($event){return _vm.moveIntoForeground($event)}}},[(_vm.window.header !== '')?_c('div',{staticClass:"inapp-window_header"},[_c(_vm.window.header,{tag:"component",attrs:{"window":_vm.window,"funcs":{close: _vm.close, toggleMin: _vm.toggleMin, toggleMax: _vm.toggleMax, move: _vm.move}}})],1):_vm._e(),_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.window.header === '' || _vm.window.minimized === false),expression:"window.header === '' || window.minimized === false"}],staticClass:"inapp-window_body",staticStyle:{"width":"100%","height":"100%"}},[_c(_vm.window.name,{tag:"component",attrs:{"window":_vm.window,"funcs":{close: _vm.close, toggleMin: _vm.toggleMin, toggleMax: _vm.toggleMax, move: _vm.move}}})],1)])])}
+var inAppWindowvue_type_template_id_c3fdaabc_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./projects/plugins/inAppWindows/src/ui/inAppWindow.vue?vue&type=template&id=9e85df9e&
+// CONCATENATED MODULE: ./projects/plugins/inAppWindows/src/ui/inAppWindow.vue?vue&type=template&id=c3fdaabc&
 
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./projects/plugins/inAppWindows/src/ui/inAppWindow.js?vue&type=script&lang=js&
-function inAppWindowvue_type_script_lang_js_objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { inAppWindowvue_type_script_lang_js_defineProperty(target, key, source[key]); }); } return target; }
+function inAppWindowvue_type_script_lang_js_ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function inAppWindowvue_type_script_lang_js_objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { inAppWindowvue_type_script_lang_js_ownKeys(source, true).forEach(function (key) { inAppWindowvue_type_script_lang_js_defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { inAppWindowvue_type_script_lang_js_ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 function inAppWindowvue_type_script_lang_js_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
@@ -765,6 +769,15 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     },
     left: function left() {
       return this.window.x + "px";
+    },
+    minnedStyles: function minnedStyles() {
+      if (!this.window.minimized) {
+        return {};
+      }
+
+      return {
+        height: "auto"
+      };
     },
     maxedStyles: function maxedStyles() {
       if (!this.window.maximized) {
@@ -1056,8 +1069,8 @@ function normalizeComponent (
 
 var component = normalizeComponent(
   ui_inAppWindowvue_type_script_lang_js_,
-  inAppWindowvue_type_template_id_9e85df9e_render,
-  inAppWindowvue_type_template_id_9e85df9e_staticRenderFns,
+  inAppWindowvue_type_template_id_c3fdaabc_render,
+  inAppWindowvue_type_template_id_c3fdaabc_staticRenderFns,
   false,
   null,
   null,

@@ -42,6 +42,12 @@ export default {
 		top() {return this.window.y+"px";},
 		left() {return this.window.x+"px";},
 		
+		minnedStyles() {
+			if(!this.window.minimized) {return {};}
+			
+			return {height: "auto"}
+		},		
+		
 		maxedStyles() {
 			if(!this.window.maximized) {return {};}
 			

@@ -62,6 +62,18 @@ test("computed.[*simple styles*] properties convert their values into CSS format
 
 });
 
+test("computed.minnedStyles switches on if window is minimized", ()=>{
+	const context = {
+		window: {minimized: null}
+	};
+	
+	context.window.minimized = false;
+	assert.deepEqual(sample.computed.minnedStyles.call(context), {});	
+	
+	context.window.minimized = true;
+	assert.deepEqual(sample.computed.minnedStyles.call(context), {height: "auto"});
+});	
+
 test("computed.maxedStyles switches on if window is maximized", ()=>{
 	const context = {
 		window: {maximized: null}

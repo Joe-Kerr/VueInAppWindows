@@ -3,7 +3,7 @@
 	<div 
 		:id="'inapp-window_'+window.id"
 		:class="['inapp-window', ...extraClasses]" 
-		:style="[{zIndex, top, left}, maxedStyles]"
+		:style="[{zIndex, top, left}, minnedStyles, maxedStyles]"
 		:ref="'window'+window.id" 
 		v-on:mousedown.capture="moveIntoForeground"
 	>										
