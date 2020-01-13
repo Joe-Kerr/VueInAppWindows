@@ -300,6 +300,11 @@ The available classes are:
 
 # Versions
 
+### 1.0.2
+- Changed: Some minor package changes.
+- Changed: Added further tests for store mutation.
+- Fixed: If a height was applied to the window, it was not properly minimized.
+
 ### 1.0.1
 - Fixed: Replaced for-in loop with for loop.
 
