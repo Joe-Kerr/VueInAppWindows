@@ -8,8 +8,8 @@
   "license": "MIT",
   "repository": "github:Joe-Kerr/VueInAppWindows",
   "dependencies": {
-    "cats4vue": "^1.0.4",
-    "vuex-heman": "^1.0.1"
+    "cats4vue": "^1.0.5",
+    "vuex-heman": "^1.6.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.7.0",
