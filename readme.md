@@ -274,7 +274,7 @@ The function parameters are the same as in the [store call](#control-windows) fo
 Windows are controlled via Vuex store calls.
 
 ### ...dispatch("namespace/open", "windowId")
-### ...dispatch("namespace/open", {id: "windowId", context: someData)
+### ...dispatch("namespace/open", {id: "windowId", context: someData, x: xPosition, y: yPosition)
 
 Open a window.
 

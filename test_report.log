@@ -37,7 +37,8 @@ Unit test report
 
   store/windows.js/actions
     √ actions.open sets window as active by string
-    √ actions.open sets window as active by id/context
+    √ actions.open sets window as active by object.id
+    √ actions.open accepts specific user parameters
     √ actions.open moves window into foreground
     √ actions.openWithChild passes params to regular open action
     √ actions.openWithChild extracts id from data parameter
@@ -132,6 +133,6 @@ Unit test report
     √ install throws if being called before plugin installer set up config data
 
 
-  107 passing 
+  108 passing 
 
  MOCHA  Tests completed successfully

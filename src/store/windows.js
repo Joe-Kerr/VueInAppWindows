@@ -74,13 +74,19 @@ export default {
 		...actions.passThruActionsFactory(["set", "setState"]),
 		
 		open(store, data) {
-			const id = (typeof data === "string") ? data : data.id;
+			const isCallByObject = (typeof data === "object");
+			const id = (!isCallByObject) ? data : data.id;
 			const commit = {id, "opened": true};
+			const validParams = ["context", "x", "y"];
 			
 			store.dispatch("moveIntoForeground", id);
 			
-			if(typeof data.context !== "undefined") {
-				commit.context = data.context;
+			if(isCallByObject) {
+				validParams.forEach((valid)=>{
+					if(typeof data[valid] !== "undefined") {
+						commit[valid] = data[valid];
+					}
+				});
 			}
 			
 			store.commit("set", commit);

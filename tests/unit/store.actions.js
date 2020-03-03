@@ -24,10 +24,22 @@ test("actions.open sets window as active by string", ()=>{
 	assert.equal(sample.state.windows[0].opened, true);
 });
 
-test("actions.open sets window as active by id/context", ()=>{
-	sample.actions.open(sample, {id: "unitTestWindow", context: "unitTest"});
+test("actions.open sets window as active by object.id", ()=>{
+	sample.actions.open(sample, {id: "unitTestWindow"});
 	assert.equal(sample.state.windows[0].opened, true);
-	assert.equal(sample.state.windows[0].context, "unitTest");
+});
+
+test("actions.open accepts specific user parameters", ()=>{
+	const dispatch = ()=>{};
+	const commit = new sinon.fake();
+	const data = {id: 2, context: 3, x: 4, y: 5, bollocks: 6};
+	
+	master.actions.open({commit, dispatch}, data);
+	assert.equal(commit.lastCall.args[1].id, 2);
+	assert.equal(commit.lastCall.args[1].context, 3);
+	assert.equal(commit.lastCall.args[1].x, 4);
+	assert.equal(commit.lastCall.args[1].y, 5);
+	assert.equal(commit.lastCall.args[1].bollocks, undefined);
 });
 
 test("actions.open moves window into foreground", ()=>{

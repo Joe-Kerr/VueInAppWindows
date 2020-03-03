@@ -1123,6 +1123,8 @@ function IWindow() {
   };
 }
 // CONCATENATED MODULE: ./projects/plugins/inAppWindows/src/store/windows.js
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -1194,15 +1196,21 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   },
   actions: _objectSpread({}, actions.passThruActionsFactory(["set", "setState"]), {
     open: function open(store, data) {
-      var id = typeof data === "string" ? data : data.id;
+      var isCallByObject = _typeof(data) === "object";
+      var id = !isCallByObject ? data : data.id;
       var commit = {
         id: id,
         "opened": true
       };
+      var validParams = ["context", "x", "y"];
       store.dispatch("moveIntoForeground", id);
 
-      if (typeof data.context !== "undefined") {
-        commit.context = data.context;
+      if (isCallByObject) {
+        validParams.forEach(function (valid) {
+          if (typeof data[valid] !== "undefined") {
+            commit[valid] = data[valid];
+          }
+        });
       }
 
       store.commit("set", commit);
@@ -1337,7 +1345,7 @@ function inAppWindowvue_type_script_lang_js_objectSpread(target) { for (var i = 
 
 function inAppWindowvue_type_script_lang_js_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+function inAppWindowvue_type_script_lang_js_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { inAppWindowvue_type_script_lang_js_typeof = function _typeof(obj) { return typeof obj; }; } else { inAppWindowvue_type_script_lang_js_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return inAppWindowvue_type_script_lang_js_typeof(obj); }
 
 
 
@@ -1356,7 +1364,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
             return false;
           }
 
-          if (expected[prop] !== null && _typeof(actual[prop]) !== expected[prop]) {
+          if (expected[prop] !== null && inAppWindowvue_type_script_lang_js_typeof(actual[prop]) !== expected[prop]) {
             console.error(prop, "'s value", actual[prop], "is not of type", expected[prop]);
             return false;
           }
