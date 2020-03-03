@@ -14,3 +14,27 @@ export function restoreWindowContainer(container) {
 		_backup[p] = null;
 	}	
 }
+
+export function writeMockWindowDataToSStoretate(state) {
+	state.init = false;
+	state.windows = [{
+		 "id": "unitTestWindow",
+		 "name": "unit-test-window",
+		 "opened": false,
+		 "zIndex": state.startingZ,
+		 "x": 44,
+		 "y": 41,
+		 "w": 250,
+		 "h": 150,
+		 "context": null,
+		 "header": "",
+		 "maximized": false,
+		 "minimized": false,
+		 "title": "something",
+		 "className": "",
+		 "children": [],
+		 "parent": ""
+		 
+	}];
+	state.index = {"unitTestWindow": 0}	
+}
