@@ -167,6 +167,11 @@ export default {
 		
 		moveIntoForeground: function() {
 			this.$store.dispatch(this.namespace+"/moveIntoForeground", this.window.id);
+		},
+		
+		openChild(windowInit) {
+			const parentId = this.window.id;
+			this.$store.dispatch(this.namespace+"/openWithChild", {parentId, params: windowInit});
 		}
 	},
 	

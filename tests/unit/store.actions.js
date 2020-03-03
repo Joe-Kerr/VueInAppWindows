@@ -1,4 +1,5 @@
 const assert = require("assert");
+const sinon = require("sinon");
 const master = require("../../src/store/windows.js").default;
 const sample = {};
 
@@ -13,7 +14,22 @@ sample.commit = (cmd, data)=>{commitCallCount++; sample.mutations[cmd](sample.st
 
 beforeEach(()=>{
 	sample.state.init = false;
-	sample.state.windows = [{"id": "unitTestWindow", "name": "unit-test-window", "opened": false, "zIndex": sample.state.startingZ, "x": 44, "y": 41, "w": 250, "h": 150, "context": null, header: "", maximized: false, minimized: false}];
+	sample.state.windows = [{
+		"id": "unitTestWindow", 
+		"name": "unit-test-window", 
+		"opened": false, 
+		"zIndex": sample.state.startingZ, 
+		"x": 44, 
+		"y": 41, 
+		"w": 250, 
+		"h": 150, 
+		"context": null, 
+		"header": "", 
+		"maximized": false, 
+		"minimized": false,
+		"children": [],
+		"parent": ""
+	}];
 	sample.state.index = {"unitTestWindow": 0}
 	commitCallCount = 0;
 });
@@ -40,11 +56,106 @@ test("actions.open moves window into foreground", ()=>{
 	assert.equal(data, "unitTestWindow");
 });
 
-test("actions.close closes and cleans up window", ()=>{
+
+test("actions.openWithChild passes params to regular open action", ()=>{
+	const dispatch = new sinon.fake();
+	const commit = ()=>{};
+	const state = {index: {"w1":0}, windows: [{opened: false}]};
+	const data = {
+		parentId: 123,
+		params: "w1"
+	};
+	
+	master.actions.openWithChild({state, commit, dispatch}, data);
+	assert.equal(dispatch.callCount, 1);
+	assert.equal(dispatch.lastCall.args[0], "open");
+	assert.equal(dispatch.lastCall.args[1], data.params);
+});
+
+test("actions.openWithChild extracts id from data parameter", ()=>{
+	const dispatch = ()=>{};
+	const commit = new sinon.fake();
+	const state = {index: {"w1":0}, windows: [{opened: false}]};
+	const data = {
+		parentId: 123,
+		params: null
+	};
+	
+	data.params = "w1"
+	master.actions.openWithChild({state, commit, dispatch}, data);
+	assert.equal(commit.lastCall.args[1].id, "w1");		
+	
+	commit.resetHistory();
+	
+	data.params = {id: "w1"};
+	master.actions.openWithChild({state, commit, dispatch}, data);
+	assert.equal(commit.lastCall.args[1].id, "w1");	
+});
+
+test("actions.openWithChild links parent and child windows together", ()=>{
+	const childWindow = {
+		id: "childWindow",
+		parent: "",
+		children: [],
+		opened: false
+	};
+	sample.state.windows.push(childWindow);
+	sample.state.index["childWindow"] = 1;
+	
+	sample.actions.openWithChild(sample, {parentId: "unitTestWindow", params: "childWindow"});	
+	
+	assert.strictEqual(sample.state.windows[0].parent, "");
+	assert.deepEqual(sample.state.windows[0].children, ["childWindow"]);	
+	
+	assert.strictEqual(sample.state.windows[1].parent, "unitTestWindow");
+	assert.deepEqual(sample.state.windows[1].children, []);
+});
+
+test("actions.openWithChild does nothing if window to be opened is already open", ()=>{
+	const dispatch = ()=>{};
+	const commit = new sinon.fake();
+	const state = {index: {"w1":0}, windows: [{opened: null}]};
+	const data = {
+		parentId: 123,
+		params: "w1"
+	};
+	
+	state.windows[0].opened = true;
+	master.actions.openWithChild({state, commit, dispatch}, data);
+	assert.equal(commit.callCount, 0);		
+	
+	state.windows[0].opened = false;
+	master.actions.openWithChild({state, commit, dispatch}, data);
+	assert.equal(commit.callCount, 2);	
+});
+
+
+test("actions.close closes and cleans up single window", ()=>{
 	sample.actions.close(sample, "unitTestWindow");
 	assert.equal(sample.state.windows[0].opened, false);
 	assert.equal(sample.state.windows[0].context, null);	
 });
+
+test("actions.close closes and cleans up nested window", ()=>{
+	const childWindow = {
+		id: "childWindow",
+		parent: "unitTestWindow",
+		children: [],
+		opened: true,
+		context: 123
+	};
+	sample.state.windows[0].children = ["childWindow"];
+	sample.state.windows.push(childWindow);
+	sample.state.index["childWindow"] = 1;
+	
+	sample.actions.close(sample, "unitTestWindow");
+	assert.equal(sample.state.windows[1].opened, false);
+	assert.equal(sample.state.windows[1].context, null);
+	
+	assert.equal(sample.state.windows[1].parent, "");
+	assert.equal(sample.state.windows[0].children.length, 0);
+});
+
 
 test("actions.moveIntoForeground applies highestZ to window", ()=>{
 	const before = sample.state.windows[0].zIndex;
@@ -58,13 +169,16 @@ test("actions.moveIntoForeground increments next z-index", ()=>{
 	assert.equal(sample.state.highestZ, before + 1);
 });
 
+
 test("actions.set was assigned the correct function", ()=>{
 	assert.equal(sample.actions.set.name, "generatedPassThruAction");
 });
 
+
 test("actions.setState was assigned the correct function", ()=>{
 	assert.equal(sample.actions.setState.name, "generatedPassThruAction");
 });
+
 
 test("actions.init returns if already inited or no data provided", ()=>{
 	sample.actions.init(sample);
@@ -74,6 +188,7 @@ test("actions.init returns if already inited or no data provided", ()=>{
 	sample.actions.init(sample, {});
 	assert.equal(commitCallCount, 0);
 });
+
 
 test("actions.destroy closes all windows and resets state", ()=>{
 	sample.actions.open(sample, {id: "unitTestWindow", context: "unitTest"});

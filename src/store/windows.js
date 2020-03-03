@@ -57,7 +57,9 @@ export default {
 				win.x = 1;
 				win.y = 1;
 				win.w = null;
-				win.h = null;				
+				win.h = null;
+				win.children = [];
+				win.parent = "";
 				
 				const idx = state.windows.push(win) - 1;
 				state.index[wins[i].id] = idx;
@@ -84,8 +86,51 @@ export default {
 			store.commit("set", commit);
 		},
 		
-		close(store, data) {
-			store.commit("set", {id: data, opened: false, context: null});
+		openWithChild(store, data) {
+			const {parentId, params} = data;
+			const childId = (typeof params === "string") ? params : params.id;
+			
+			const window = store.state.windows[ store.state.index[childId] ];
+			
+			if(window.opened) {
+				return;
+			}
+			
+			store.dispatch("open", params);			
+			store.commit("set", {id: parentId, children: childId, arrOp: "push"});
+			store.commit("set", {id: childId, parent: parentId});			
+		},
+		
+		//#todo reset zIndex
+		close(store, data) {		
+			const rootWindow = store.state.windows[ store.state.index[data] ];
+			
+			if(typeof rootWindow === "undefined") {
+				throw new Error("Tried to close a window with an undefined id: "+data);
+			}			
+			
+			const operations = [];
+			const walk = (window, result) => {				
+				const parent = store.state.windows[ store.state.index[window.parent] ];
+
+				result.push({parent, window});
+
+				if(window.children.length > 0) {
+					window.children.forEach((childId)=>{
+						const child = store.state.windows[ store.state.index[childId] ];
+
+						walk(child, result)
+					});
+				}
+			};
+			walk(rootWindow, operations);			
+
+			operations.forEach((op)=>{
+				if(typeof op.parent !== "undefined") {
+					store.commit("set", {id: op.parent.id, children: op.window.id, arrOp: "delete"});
+				}
+				store.commit("set", {id: op.window.id, opened: false, parent: "", context: null});
+			});
 		},
 		
 		moveIntoForeground(store, data) {
@@ -107,6 +152,7 @@ export default {
 			return true;
 		},
 		
+		//#todo call close action?
 		destroy(store) {
 			const wins = store.state.windows;
 			for(let i=0, ii=wins.length; i<ii; i++) {		

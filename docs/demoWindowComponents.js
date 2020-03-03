@@ -125,8 +125,9 @@ const win2 = {
 			<p>The $state property (name can be chosen) controls things like what header to render.</p>
 			<p>Or add a class name so that this window has also a drop shadow.</p>
 			<p><a href="#" @click.prevent="funcs.close()">Closing {{window.title}} from here works too.</a> This is done via the "funcs" props property.</p>
+			<p>Speaking of funcs: <a href="#" @click="funcs.openChild('demo-window-1')">This will open a child window.</a>  Close the parent window (move the child out of the way if necessary) and see what happens...</p>
 		</div>
-	`	
+	`
 };
 
 const win3 = {

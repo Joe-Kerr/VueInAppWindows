@@ -16,6 +16,7 @@ Once set up, you will hardly even notice that you use the plugin. No tight coupl
 - Reusable: put anything inside a window
 - No requires / imports in your custom windows
 - Define default headers to have even less work
+- Open nested windows that get closed automatically
 
 
 ## Demo
@@ -258,6 +259,12 @@ Toggles window.maximized and makes this window fill the screen or resets it to t
 
 Toggles window.minimized. If the window has a header, toggleMin will hide its body.
 
+
+### funcs.openChild(id< string|object >)< function >
+
+Opens a child window from the window the function is called in. Windows can be nested. Closing any parent window automatically closes all child windows.
+
+The function parameters are the same as in the [store call](#control-windows) for opening a regular window.
 
 
 # Use

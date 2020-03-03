@@ -9,13 +9,13 @@
 	>										
 
 		<div class="inapp-window_header" v-if="window.header !== ''">
-			<component :is="window.header" :window="window" :funcs="{close, toggleMin, toggleMax, move}" />
+			<component :is="window.header" :window="window" :funcs="{close, toggleMin, toggleMax, move, openChild}" />
 		</div>
 		
 
 		
 		<div class="inapp-window_body" style="width: 100%; height: 100%;" v-show="window.header === '' || window.minimized === false">
-			<component :is="window.name" :window="window" :funcs="{close, toggleMin, toggleMax, move}" />
+			<component :is="window.name" :window="window" :funcs="{close, toggleMin, toggleMax, move, openChild}" />
 		</div>	
 
 	</div>

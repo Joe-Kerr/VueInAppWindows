@@ -15,6 +15,8 @@ const header1 = require("../unit_fix/header1.vue").default;
 const header2 = require("../unit_fix/header2.vue").default;
 const window1 = require("../unit_fix/window1.vue").default;
 const window2 = require("../unit_fix/window2.vue").default;
+const window3 = require("../unit_fix/window3.vue").default;
+const window4 = require("../unit_fix/window4.vue").default;
 
 suite("Integration testing");
 
@@ -29,11 +31,46 @@ function close(idIntSuffix=null) {
 	if(idIntSuffix === null) {
 		store.dispatch("windows/close", "window1");
 		store.dispatch("windows/close", "window2");
+		store.dispatch("windows/close", "window3");
+		store.dispatch("windows/close", "window4");
 		return;
 	}
 	
 	const id = "window"+idIntSuffix;
 	store.dispatch("windows/close", id);
+}
+
+function setupNestedBranchedWindows() {	
+	//      w2 - w3
+	// w1 <
+	//     w4	
+	const stateWindows = store.state.windows.windows;
+	const stateIndex = store.state.windows.index;
+	const get = (id) => {
+		const win = stateWindows[stateIndex[id]];
+		assert.equal(win.id, id, "Test setup error: setupNestedBranchedWindows() failed to lookup correctly id in store index.");
+		return win;
+	};
+	
+	const win1 = open(1);
+	win1.vm.openChild("window2");
+	win1.vm.openChild("window4");
+	
+	const win4 = vue.find("#"+WIN_ID_PREFIX+"window4");
+	const win2 = vue.find("#"+WIN_ID_PREFIX+"window2");
+	win2.vm.openChild("window3");
+	
+	const win3 = vue.find("#"+WIN_ID_PREFIX+"window3");
+	
+	const win1State = get("window1");
+	const win2State = get("window2");
+	const win3State = get("window3");
+	const win4State = get("window4");
+
+	return {
+		win1, win2, win3, win4,
+		win1State, win2State, win3State, win4State
+	};
 }
 
 before(()=>{
@@ -46,7 +83,7 @@ before(()=>{
 		vuex: store, 
 		storeNamespace: "windows",
 		componentNamespace: "$data",
-		windows: [window1, window2],
+		windows: [window1, window2, window3, window4],
 		headers: [header1, header2]
 	});			
 	
@@ -248,4 +285,109 @@ test("window can have additional classes", ()=>{
 	//set on window1.vue in ../unit_fix
 	assert.ok(classes.indexOf("testClass1") > -1);
 	assert.ok(classes.indexOf("testClass2") > -1);
+});
+
+test("window can open nested child windows", ()=>{
+	const w = setupNestedBranchedWindows();
+
+	assert.strictEqual(w.win1State.opened, true);
+	assert.equal(w.win1State.parent, "");
+	assert.deepEqual(w.win1State.children, ["window2", "window4"]);	
+	
+	assert.strictEqual(w.win2State.opened, true);
+	assert.equal(w.win2State.parent, "window1");
+	assert.deepEqual(w.win2State.children, ["window3"]);	
+	
+	assert.strictEqual(w.win3State.opened, true);
+	assert.equal(w.win3State.parent, "window2");
+	assert.deepEqual(w.win3State.children, []);	
+	
+	assert.strictEqual(w.win4State.opened, true);
+	assert.equal(w.win4State.parent, "window1");
+	assert.deepEqual(w.win4State.children, []);
+});
+
+	//      w2 - w3
+	// w1 <
+	//     w4
+
+test("window properly cleans up after closing leaf window", ()=>{
+	const w = setupNestedBranchedWindows();
+	close(4);
+	
+	assert.strictEqual(w.win1State.opened, true);
+	assert.equal(w.win1State.parent, "");
+	assert.deepEqual(w.win1State.children, ["window2"]);	
+	
+	assert.strictEqual(w.win2State.opened, true);
+	assert.equal(w.win2State.parent, "window1");
+	assert.deepEqual(w.win2State.children, ["window3"]);	
+	
+	assert.strictEqual(w.win3State.opened, true);
+	assert.equal(w.win3State.parent, "window2");
+	assert.deepEqual(w.win3State.children, []);	
+	
+	assert.strictEqual(w.win4State.opened, false);
+	assert.equal(w.win4State.parent, "");
+	assert.deepEqual(w.win4State.children, []);	
+});
+
+test("window properly cleans up after closing root window", ()=>{
+	const w = setupNestedBranchedWindows();
+	close(1);
+	
+	assert.strictEqual(w.win1State.opened, false);
+	assert.equal(w.win1State.parent, "");
+	assert.deepEqual(w.win1State.children, []);	
+	
+	assert.strictEqual(w.win2State.opened, false);
+	assert.equal(w.win2State.parent, "");
+	assert.deepEqual(w.win2State.children, []);	
+	
+	assert.strictEqual(w.win3State.opened, false);
+	assert.equal(w.win3State.parent, "");
+	assert.deepEqual(w.win3State.children, []);	
+	
+	assert.strictEqual(w.win4State.opened, false);
+	assert.equal(w.win4State.parent, "");
+	assert.deepEqual(w.win4State.children, []);		
+});
+
+test("window properly cleans up after closing branch window", ()=>{
+	const w = setupNestedBranchedWindows();
+	close(2);
+	
+	assert.strictEqual(w.win1State.opened, true);
+	assert.equal(w.win1State.parent, "");
+	assert.deepEqual(w.win1State.children, ["window4"]);	
+	
+	assert.strictEqual(w.win2State.opened, false);
+	assert.equal(w.win2State.parent, "");
+	assert.deepEqual(w.win2State.children, []);	
+	
+	assert.strictEqual(w.win3State.opened, false);
+	assert.equal(w.win3State.parent, "");
+	assert.deepEqual(w.win3State.children, []);	
+	
+	assert.strictEqual(w.win4State.opened, true);
+	assert.equal(w.win4State.parent, "window1");
+	assert.deepEqual(w.win4State.children, []);		
+});
+
+test("window (close) cannot get stuck in a loop of child windows", ()=>{
+	const win1 = open(1);
+	win1.vm.openChild("window2");
+
+	const win2 = vue.find("#"+WIN_ID_PREFIX+"window2");
+	win2.vm.openChild("window3");
+	
+	const win3 = vue.find("#"+WIN_ID_PREFIX+"window3");	
+	win3.vm.openChild("window1");
+	
+	close();
+	
+	assert.strictEqual(store.state.windows.windows[0].children.length, 0);
+	assert.strictEqual(store.state.windows.windows[1].children.length, 0);
+	assert.strictEqual(store.state.windows.windows[2].children.length, 0);
+	assert.strictEqual(store.state.windows.windows[3].children.length, 0);
 });

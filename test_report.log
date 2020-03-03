@@ -29,12 +29,22 @@ Unit test report
     √ window can have custom title
     √ window can have custom context
     √ window can have additional classes
+    √ window can open nested child windows
+    √ window properly cleans up after closing leaf window 
+    √ window properly cleans up after closing root window
+    √ window properly cleans up after closing branch window
+    √ window (close) cannot get stuck in a loop of child windows
 
   store/windows.js/actions
     √ actions.open sets window as active by string
     √ actions.open sets window as active by id/context
     √ actions.open moves window into foreground
-    √ actions.close closes and cleans up window
+    √ actions.openWithChild passes params to regular open action
+    √ actions.openWithChild extracts id from data parameter
+    √ actions.openWithChild links parent and child windows together
+    √ actions.openWithChild does nothing if window to be opened is already open
+    √ actions.close closes and cleans up single window
+    √ actions.close closes and cleans up nested window
     √ actions.moveIntoForeground applies highestZ to window
     √ actions.moveIntoForeground increments next z-index
     √ actions.set was assigned the correct function
@@ -89,6 +99,7 @@ Unit test report
     √ methods.move dispatches, namespaced, new x,y to store
     √ methods.preventOutOfBounds prevents window edges from going out of viewport
     √ methods.moveIntoForeground dispatches, namespaced, window id to store
+    √ methods.openChild dispatches, namespaced, id and params to store
 
   ui/inappWindowContainer.js
     √ computed.listOfWindows returns filtered list of opened windows
@@ -121,6 +132,6 @@ Unit test report
     √ install throws if being called before plugin installer set up config data
 
 
-  96 passing 
+  107 passing 
 
  MOCHA  Tests completed successfully

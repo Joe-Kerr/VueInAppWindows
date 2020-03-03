@@ -12,6 +12,7 @@ function getWindowWithProperValues() {
 		if(val === null || val === "string") {continue;}
 		if(val === "number") {window[p] = 123}
 		else if(val === "boolean") {window[p] = true}
+		else if(val === "object") {window[p] = {}}
 		else {throw new Error("Test setup error: getWindowWithProperValues() encounted an undefined type: "+val)}
 	}	
 	return window;

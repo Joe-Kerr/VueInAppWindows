@@ -16,6 +16,8 @@ export function IWindow() {
 		
 		opened: "boolean",
 		minimized: "boolean",
-		maximized: "boolean"
+		maximized: "boolean",
+		children: "object",
+		parent: "string"
 	}
 }

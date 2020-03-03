@@ -268,3 +268,12 @@ test("methods.moveIntoForeground dispatches, namespaced, window id to store", ()
 	assert.equal(context.$store.dispatch.firstCall.args[0], "NS/moveIntoForeground");
 	assert.equal(context.$store.dispatch.firstCall.args[1], 123);	
 });
+
+test("methods.openChild dispatches, namespaced, id and params to store", ()=>{
+	const context = {$store: {dispatch: new sinon.fake()}, namespace: "NS", window: {id: 123}};
+	sample.methods.openChild.call(context, "passthrough");
+	
+	assert.equal(context.$store.dispatch.firstCall.args[0], "NS/openWithChild");
+	assert.equal(context.$store.dispatch.firstCall.args[1].parentId, 123);	
+	assert.equal(context.$store.dispatch.firstCall.args[1].params, "passthrough");	
+});
