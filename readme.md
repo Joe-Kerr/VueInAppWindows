@@ -307,6 +307,13 @@ The available classes are:
 
 # Versions
 
+### 1.1.0
+- New: Nested child windows can be opened that get closed automatically.
+- New: Windows can be opened with optional x,y parameters.
+
+- Changed: Updated dependencies.
+- Changed: Minor changes to package and tests.
+
 ### 1.0.2
 - Changed: Some minor package changes.
 - Changed: Added further tests for store mutation.

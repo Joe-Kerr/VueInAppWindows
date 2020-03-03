@@ -1,6 +1,6 @@
 {
   "name": "@joe_kerr/vue-in-app-windows",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "In app windows for the win.",
   "main": "./src/index.js",
   "module": "./src/index.js",
